@@ -51,21 +51,24 @@ public class CurrencyCube extends LinearLayout {
                 a.recycle();
             }
         }
-        mBinding.setCurrencyName(mCurrencyName);
-        mBinding.setConvertValue(mConvertValue);
-        mBinding.setUpdateDate(mLastUpdateDateStr);
+        setCurrencyName(mCurrencyName);
+        setConvertValue(mConvertValue);
+        setLastUpdateDateStr(mLastUpdateDateStr);
     }
 
     public void setCurrencyName(String currencyName) {
         mCurrencyName = currencyName;
+        mBinding.setCurrencyName(mCurrencyName);
     }
 
     public void setConvertValue(float convertValue) {
         mConvertValue = convertValue;
+        mBinding.setConvertValue(mConvertValue);
     }
 
     public void setLastUpdateDateStr(String lastUpdateDateStr) {
         mLastUpdateDateStr = lastUpdateDateStr;
+        mBinding.setUpdateDate(mLastUpdateDateStr);
     }
 
 }

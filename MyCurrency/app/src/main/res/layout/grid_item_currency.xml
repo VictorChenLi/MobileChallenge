@@ -1,0 +1,22 @@
+<layout>
+
+    <data class="com.victorchen.mycurrency.ui.binding.GridItemCurrencyBinding">
+        <variable
+            name="data"
+            type="com.victorchen.mycurrency.ui.model.ExchangeRate" />
+    </data>
+
+    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <com.victorchen.mycurrency.ui.component.CurrencyCube
+            app:currencyName="@{data.currencyName}"
+            app:convertValue="@{data.convertValue}"
+            app:lastUpdateDateStr="@{data.updateDateStr}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</layout>

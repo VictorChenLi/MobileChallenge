@@ -1,32 +1,37 @@
 package com.victorchen.mycurrency.ui;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import com.victorchen.mycurrency.network.eventbus.EventBusController;
-import com.victorchen.mycurrency.network.eventbus.IEventBusHandle;
+import com.victorchen.mycurrency.network.api.RawBaseRequest;
+import com.victorchen.mycurrency.ui.component.LoadingDialog;
 
-public class BaseActivity extends AppCompatActivity implements IEventBusHandle {
-    protected EventBusController mEventBusController;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
-    @Override
-    public EventBusController getEventBusController() {
-        if (mEventBusController == null) {
-            mEventBusController = new EventBusController() {
-                @Override
-                public Object getSubscriber() {
-                    return BaseActivity.this;
-                }
-            };
-        }
-        return mEventBusController;
+public abstract class BaseActivity extends AppCompatActivity {
+    protected LoadingDialog mLoadingDialog;
+
+    public abstract int getMainContainerID();
+
+    public void showMainFragment(Fragment fragment) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        // Replace the contents of the container with the new fragment
+        ft.replace(getMainContainerID(), fragment);
+        // Complete the changes added above
+        ft.commit();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void showLoadingDialog() {
+        if(this.mLoadingDialog != null && !this.mLoadingDialog.isShowing()) {
+            this.mLoadingDialog.show();
+        }
+    }
 
-        if (mEventBusController != null) {
-            mEventBusController.subscribeEventBus(false);
+    public void dismissLoadingDialog() {
+        if(this.mLoadingDialog != null && this.mLoadingDialog.isShowing()) {
+            this.mLoadingDialog.dismiss();
         }
     }
 }
