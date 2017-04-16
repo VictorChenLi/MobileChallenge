@@ -2,17 +2,21 @@ package com.victorchen.mycurrency.ui.component;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.databinding.DataBindingUtil;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
 import com.victorchen.mycurrency.R;
+import com.victorchen.mycurrency.ui.binding.ViewCurrencyCubeBinding;
 
 public class CurrencyCube extends LinearLayout {
     private Context mContext;
+    private ViewCurrencyCubeBinding mBinding;
     private String mCurrencyName;
     private float mConvertValue;
+    private String mLastUpdateDateStr;
 
 
     public CurrencyCube(Context context) {
@@ -32,10 +36,7 @@ public class CurrencyCube extends LinearLayout {
 
     private void init(Context context, AttributeSet attrs) {
         mContext = context;
-        LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.view_currency_cube, this, true);
-
-        mContext = context;
+        mBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.view_currency_cube, this, true);
         if (attrs != null) {
             TypedArray a = context.getTheme().obtainStyledAttributes(
                     attrs,
@@ -45,10 +46,26 @@ public class CurrencyCube extends LinearLayout {
             try {
                 mCurrencyName = a.getString(R.styleable.CurrencyCube_currencyName);
                 mConvertValue = a.getFloat(R.styleable.CurrencyCube_convertValue, 0);
+                mLastUpdateDateStr = a.getString(R.styleable.CurrencyCube_lastUpdateDateStr);
             } finally {
                 a.recycle();
             }
         }
+        mBinding.setCurrencyName(mCurrencyName);
+        mBinding.setConvertValue(mConvertValue);
+        mBinding.setUpdateDate(mLastUpdateDateStr);
+    }
+
+    public void setCurrencyName(String currencyName) {
+        mCurrencyName = currencyName;
+    }
+
+    public void setConvertValue(float convertValue) {
+        mConvertValue = convertValue;
+    }
+
+    public void setLastUpdateDateStr(String lastUpdateDateStr) {
+        mLastUpdateDateStr = lastUpdateDateStr;
     }
 
 }

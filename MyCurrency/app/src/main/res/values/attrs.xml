@@ -3,5 +3,6 @@
     <declare-styleable name="CurrencyCube">
         <attr name="currencyName" format="string" />
         <attr name="convertValue" format="float"/>
+        <attr name="lastUpdateDateStr" format="string"/>
     </declare-styleable>
 </resources>

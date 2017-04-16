@@ -29,7 +29,7 @@ public class BaseStatus implements IRetrofitDataObj {
     }
 
     public BaseStatus() {
-        this.code = PENDING;
+        this.code = SUCCESS;
     }
 
     @Override
