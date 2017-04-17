@@ -4,10 +4,12 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -16,12 +18,14 @@ import android.widget.ArrayAdapter;
 import com.victorchen.mycurrency.R;
 import com.victorchen.mycurrency.network.api.fixerio.FixerApi;
 import com.victorchen.mycurrency.ui.binding.ExchangeRateFragmentBinding;
-import com.victorchen.mycurrency.ui.component.DataBoundAdapter;
+import com.victorchen.mycurrency.ui.component.CurrencyEditTextWatcher;
+import com.victorchen.mycurrency.ui.dataBinding.DataBoundAdapter;
 import com.victorchen.mycurrency.ui.model.ExchangeRate;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,13 +36,12 @@ public class ExchangeRateFragment extends BaseFragment {
     private ArrayAdapter<String> mSpinnerAdapter;
     private List<ExchangeRate> mExchangeRateList = new ArrayList<>();
     private String mBaseCurrency;
-
+    private BigDecimal mInputValue = new BigDecimal(1.0);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getEventBusController().subscribeEventBus(true);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -89,6 +92,36 @@ public class ExchangeRateFragment extends BaseFragment {
         mAdapter = new DataBoundAdapter<>(mActivity, R.layout.grid_item_currency);
         mBinding.convertList.setLayoutManager(new GridLayoutManager(mActivity, 2));
         mBinding.convertList.setAdapter(mAdapter);
+        RecyclerView.ItemAnimator animator = mBinding.convertList.getItemAnimator();
+        if (animator instanceof SimpleItemAnimator) {
+            ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
+        }
+
+
+        mBinding.currencyInput.addTextChangedListener(new CurrencyEditTextWatcher(mBinding.currencyInput));
+        mBinding.currencyInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // every time when user change the input value
+                // we update the convert value
+                String strForDecimal = CurrencyEditTextWatcher.stripNonDigitsForDecimal(editable.toString());
+                mInputValue = !TextUtils.isEmpty(strForDecimal) ? new BigDecimal(strForDecimal) : null;
+                for (ExchangeRate rate : mExchangeRateList) {
+                    rate.updateConvertValue(mInputValue);
+                }
+                mAdapter.setSource(mExchangeRateList);
+            }
+        });
     }
 
     protected void setupSpinnerAdapter(List<String> currencyList) {
@@ -112,35 +145,15 @@ public class ExchangeRateFragment extends BaseFragment {
             mBaseCurrency = response.base;
             currencyList.add(response.base);
             for (Map.Entry<String, Float> rate : response.rates.entrySet()) {
-                currencyList.add(rate.getKey());
-                mExchangeRateList.add(new ExchangeRate(rate.getKey(), rate.getValue(), response.date));
+                String currencyName = rate.getKey();
+                Float currencyRate = rate.getValue();
+                currencyList.add(currencyName);
+                ExchangeRate newExchangeRate = new ExchangeRate(currencyName, currencyRate, response.date);
+                newExchangeRate.updateConvertValue(mInputValue);
+                mExchangeRateList.add(newExchangeRate);
             }
             setupSpinnerAdapter(currencyList);
             mAdapter.setSource(mExchangeRateList);
         }
     }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            //fetch all currency
-            fetchRates(mBaseCurrency);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
 }

@@ -1,4 +1,4 @@
-package com.victorchen.mycurrency.ui.component;
+package com.victorchen.mycurrency.ui.dataBinding;
 
 
 import android.content.Context;

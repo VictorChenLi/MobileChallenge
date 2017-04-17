@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
+import com.google.common.base.Strings;
 import com.victorchen.mycurrency.R;
 import com.victorchen.mycurrency.ui.binding.ViewCurrencyCubeBinding;
 
@@ -57,16 +58,22 @@ public class CurrencyCube extends LinearLayout {
     }
 
     public void setCurrencyName(String currencyName) {
+        if (Strings.nullToEmpty(mCurrencyName).equals(currencyName)) return;
+
         mCurrencyName = currencyName;
         mBinding.setCurrencyName(mCurrencyName);
     }
 
     public void setConvertValue(float convertValue) {
+        if (convertValue == mConvertValue) return;
+
         mConvertValue = convertValue;
         mBinding.setConvertValue(mConvertValue);
     }
 
     public void setLastUpdateDateStr(String lastUpdateDateStr) {
+        if (Strings.nullToEmpty(mLastUpdateDateStr).equals(lastUpdateDateStr)) return;
+
         mLastUpdateDateStr = lastUpdateDateStr;
         mBinding.setUpdateDate(mLastUpdateDateStr);
     }

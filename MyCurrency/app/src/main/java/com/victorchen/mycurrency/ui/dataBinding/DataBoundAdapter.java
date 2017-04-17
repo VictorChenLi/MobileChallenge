@@ -1,4 +1,4 @@
-package com.victorchen.mycurrency.ui.component;
+package com.victorchen.mycurrency.ui.dataBinding;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -12,9 +12,10 @@ import java.util.List;
 
 /**
  * Simple data bound recycler view adapter.
- *
+ * <p>
  * NOTE: The bounded data name MUST be named "data" when defined
  * in item's layout.
+ *
  * @param <T> type of data for this adapter, must implement both Indexable and Identifiable
  */
 public class DataBoundAdapter<T> extends AbstractRecyclerViewAdapter<DataBoundAdapter<T>.ViewHolder> {
@@ -63,8 +64,9 @@ public class DataBoundAdapter<T> extends AbstractRecyclerViewAdapter<DataBoundAd
     /**
      * Override this method to provide additional data binding,
      * for example complex binding logic or not directly bindable fields
+     *
      * @param viewHolder viewHolder
-     * @param position position of data item
+     * @param position   position of data item
      */
     protected void bindData(DataBoundAdapter<T>.ViewHolder viewHolder, int position) {
         //additional binding goes here

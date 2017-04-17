@@ -1,17 +1,22 @@
 package com.victorchen.mycurrency.ui;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import com.victorchen.mycurrency.network.api.RawBaseRequest;
 import com.victorchen.mycurrency.ui.component.LoadingDialog;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected LoadingDialog mLoadingDialog;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.mLoadingDialog = LoadingDialog.newInstance(this);
+        this.mLoadingDialog.setCancelable(false);
+    }
 
     public abstract int getMainContainerID();
 
@@ -24,13 +29,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void showLoadingDialog() {
-        if(this.mLoadingDialog != null && !this.mLoadingDialog.isShowing()) {
+        if (this.mLoadingDialog != null && !this.mLoadingDialog.isShowing()) {
             this.mLoadingDialog.show();
         }
     }
 
     public void dismissLoadingDialog() {
-        if(this.mLoadingDialog != null && this.mLoadingDialog.isShowing()) {
+        if (this.mLoadingDialog != null && this.mLoadingDialog.isShowing()) {
             this.mLoadingDialog.dismiss();
         }
     }

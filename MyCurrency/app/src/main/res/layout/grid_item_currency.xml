@@ -1,22 +1,43 @@
 <layout>
 
     <data class="com.victorchen.mycurrency.ui.binding.GridItemCurrencyBinding">
+
         <variable
             name="data"
             type="com.victorchen.mycurrency.ui.model.ExchangeRate" />
     </data>
 
-    <LinearLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <!--<LinearLayout-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:gravity="center_horizontal"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="vertical">-->
+    <!--<com.victorchen.mycurrency.ui.component.CurrencyCube-->
+    <!--app:currencyName="@{data.currencyName}"-->
+    <!--app:convertValue="@{data.convertValue.floatValue()}"-->
+    <!--app:lastUpdateDateStr="@{data.updateDateStr}"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"/>-->
+    <!--</LinearLayout>-->
+
+    <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/tools"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        card_view:cardUseCompatPadding="true"
+        card_view:cardCornerRadius="8dp"
+        android:layout_margin="8dp">
+
         <com.victorchen.mycurrency.ui.component.CurrencyCube
+            android:layout_gravity="center_horizontal"
             app:currencyName="@{data.currencyName}"
-            app:convertValue="@{data.convertValue}"
+            app:convertValue="@{data.convertValue.floatValue()}"
             app:lastUpdateDateStr="@{data.updateDateStr}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.v7.widget.CardView>
 </layout>
