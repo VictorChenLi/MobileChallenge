@@ -9,6 +9,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 public class CurrencyEditTextWatcher implements TextWatcher {
+    // round up the Decimal to two decimals
     public static DecimalFormat displayCurrencyFormat = new DecimalFormat("$###,###,###.##");
     public static DecimalFormat editCurrencyFormatAllowZeroPrefix = new DecimalFormat("$###,###,###.##");
     public static DecimalFormat editCurrencyFormat = new DecimalFormat("$###,###,###.##");

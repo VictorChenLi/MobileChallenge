@@ -67,6 +67,8 @@ public class ExchangeRateFragment extends BaseFragment {
         fetchRates(mBaseCurrency);
     }
 
+    // will check the shared preference first
+    // if not in the shared preference, then make api call
     private void fetchRates(String base) {
         if (null != base) {
             // check shared preference first
@@ -93,7 +95,7 @@ public class ExchangeRateFragment extends BaseFragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String newBase = (String) adapterView.getItemAtPosition(i);
                 if (mBaseCurrency.equals(newBase)) return;
-
+                // fetch the rates based on selection
                 fetchRates(newBase);
             }
 
@@ -105,13 +107,11 @@ public class ExchangeRateFragment extends BaseFragment {
 
         // set up the Grid RecyclerView
         mAdapter = new ConvertedCurrencyAdapter(mActivity, mExchangeRateList);
+        // TODO caculate the col number based on screen size
         mBinding.convertList.setLayoutManager(new GridLayoutManager(mActivity, 2));
         mBinding.convertList.setAdapter(mAdapter);
-        RecyclerView.ItemAnimator animator = mBinding.convertList.getItemAnimator();
-        if (animator instanceof SimpleItemAnimator) {
-            ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
-        }
 
+        // auto format currency input
         mBinding.currencyInput.addTextChangedListener(new CurrencyEditTextWatcher(mBinding.currencyInput));
         mBinding.currencyInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -137,10 +137,12 @@ public class ExchangeRateFragment extends BaseFragment {
             }
         });
 
+        // pull down refresh
         mBinding.swipeRefreshContainer.setColorSchemeResources(R.color.colorPrimary);
         mBinding.swipeRefreshContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                // focus to make a api request
                 callFetchRateApi(mBaseCurrency);
             }
         });
@@ -154,6 +156,7 @@ public class ExchangeRateFragment extends BaseFragment {
         mSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         mBinding.baseCurrency.setAdapter(mSpinnerAdapter);
+        // the first dropdown item always is the base currency
         mBinding.baseCurrency.setSelection(0);
     }
 
@@ -177,12 +180,15 @@ public class ExchangeRateFragment extends BaseFragment {
                 newExchangeRate.updateConvertValue(mInputValue);
                 mExchangeRateList.add(newExchangeRate);
             }
+            // update the dropdown
             setupSpinnerAdapter(currencyList);
             mAdapter.setSource(mExchangeRateList);
         } else {
+            // show error message
             mActivity.showToast(response.status.message, Toast.LENGTH_LONG);
         }
 
+        // stop swipe refresh widget refreshing
         mBinding.swipeRefreshContainer.setRefreshing(false);
     }
 }
