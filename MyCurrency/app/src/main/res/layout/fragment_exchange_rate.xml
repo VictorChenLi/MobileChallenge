@@ -28,14 +28,16 @@
             android:id="@+id/currency_input_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/full_input_margin"
+            android:background="@color/colorStable"
+            android:padding="@dimen/full_input_padding"
+            android:elevation="@dimen/full_input_elevation"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/currency_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="4"
                 android:hint="@string/currency_input_hint"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
@@ -46,14 +48,18 @@
                 android:id="@+id/base_currency"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textAlignment="center" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/convertList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_container"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/convertList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 
 </layout>

@@ -5,7 +5,9 @@ import com.victorchen.mycurrency.MyCurrencyApp;
 import com.victorchen.mycurrency.network.api.fixerio.model.FixerBaseRequest;
 import com.victorchen.mycurrency.network.api.fixerio.model.FixerBaseResponse;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class FixerApi {
     private static FixerRetroApiService service = FixerApiFactory.getInstance().getApiInstance(MyCurrencyApp.App, FixerRetroApiService.class);

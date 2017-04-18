@@ -1,5 +1,6 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="full_input_margin">20dp</dimen>
+    <dimen name="full_input_padding">20dp</dimen>
+    <dimen name="full_input_elevation">5dp</dimen>
     <dimen name="currency_cube_padding">8dp</dimen>
 </resources>
