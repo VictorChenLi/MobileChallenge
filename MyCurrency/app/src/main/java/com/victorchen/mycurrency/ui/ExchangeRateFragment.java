@@ -79,7 +79,7 @@ public class ExchangeRateFragment extends BaseFragment {
         callFetchRateApi(base);
     }
 
-    private void callFetchRateApi(String base){
+    private void callFetchRateApi(String base) {
         mActivity.showLoadingDialog();
         new FixerApi.GetLatestRates(base, null).postRequestAsync();
     }

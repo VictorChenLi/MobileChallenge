@@ -17,7 +17,7 @@ public class FixerBaseResponse extends BaseResponse {
     public String date;
     public Map<String, Float> rates;
 
-    public Date getUpdateDate() throws ParseException{
+    public Date getUpdateDate() throws ParseException {
         return serverSimpleDateFormatter.parse(date);
     }
 }

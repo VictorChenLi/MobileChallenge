@@ -5,9 +5,7 @@ import com.victorchen.mycurrency.MyCurrencyApp;
 import com.victorchen.mycurrency.network.api.fixerio.model.FixerBaseRequest;
 import com.victorchen.mycurrency.network.api.fixerio.model.FixerBaseResponse;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class FixerApi {
     private static FixerRetroApiService service = FixerApiFactory.getInstance().getApiInstance(MyCurrencyApp.App, FixerRetroApiService.class);
@@ -16,11 +14,12 @@ public class FixerApi {
         public static final String SEPARATOR = ",";
 
         public GetLatestRates(String base, List<String> convertCurrencyList) {
-            String convertTo = null;
-            if (null != convertCurrencyList)
-                convertTo = Joiner.on(SEPARATOR).skipNulls().join(convertCurrencyList);
+            setApiCall(service.getLatestRates(base, getJoinedCurrencyStr(convertCurrencyList)));
+        }
 
-            setApiCall(service.getLatestRates(base, convertTo));
+        public static String getJoinedCurrencyStr(List<String> currencyList) {
+            if (null == currencyList || currencyList.isEmpty()) return null;
+            return Joiner.on(SEPARATOR).skipNulls().join(currencyList);
         }
 
         public static class Response extends FixerBaseResponse {

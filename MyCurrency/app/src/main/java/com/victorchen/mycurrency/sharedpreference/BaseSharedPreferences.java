@@ -242,10 +242,4 @@ public class BaseSharedPreferences {
     protected String getValueByKey(String key) {
         return mSharedPref.getString(key, null);
     }
-
-    protected <T extends Object> T getFromCache(String key, T defaultValue) {
-        Object val = sCache.get(key);
-        if (val == null) return defaultValue;
-        else return (T) val;
-    }
 }
